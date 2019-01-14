@@ -7,6 +7,7 @@
     "dev": "DEBUG=basic-auth:* nodemon -e hbs,js,css ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^3.0.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
