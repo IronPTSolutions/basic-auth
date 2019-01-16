@@ -19,6 +19,7 @@ const schema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+
 schema.pre('save', function(next) {
   const user = this;
 

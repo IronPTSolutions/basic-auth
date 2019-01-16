@@ -3,6 +3,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const mongoose = require('mongoose');
 
 require('./config/db.config');
 
@@ -19,6 +22,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  name: 'pepe',
+  secret: process.env.COOKIE_SECRET || 'SuperSecret',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.COOKIE_SECURE || false,
+    expires: 60 * 60 * 24 * 1000 * 7
+  },
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    ttl: 60 * 60 * 24 * 1000 * 7
+  })
+}));
 
 app.use('/', authRouter);
 

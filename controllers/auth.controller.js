@@ -23,7 +23,7 @@ module.exports.doRegister = (req, res, next) => {
 
         return user.save()
           .then(user => {
-            res.render('auth/register');
+            res.redirect('/login');
           });
       }
     })
@@ -76,11 +76,20 @@ module.exports.doLogin = (req, res, next) => {
                   }
                 });
               } else {
-                res.send('Authenticated!!!');
+                req.session.user = user;
+                res.redirect('/profile');
               }
             })
         }
       })
       .catch(error => next(error));
   }
+}
+
+
+module.exports.profile = (req, res, next) => {
+  const user = req.session.user;
+  res.render('auth/profile', {
+    user: user
+  });
 }
